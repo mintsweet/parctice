@@ -1,0 +1,10 @@
+{
+  "eslint.validate": [
+    "javascript",
+    { "language": "typescript", "autoFix": true }
+  ],
+  "eslint.options": {
+    "configFile": ".eslintrc.js"
+  },
+  "prettier.configPath": ".prettierrc.js"
+}
