@@ -1,7 +1,6 @@
 import { Application } from 'egg';
+import CommonRouter from '@/router/common';
 
 export default (app: Application) => {
-  const { controller, router } = app;
-
-  router.get('/', controller.home.index);
+  CommonRouter(app);
 };
