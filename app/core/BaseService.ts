@@ -1,0 +1,43 @@
+import { Service } from 'egg';
+import { Model } from 'mongoose';
+
+export default class BaseService extends Service {
+  protected model: Model<any>;
+
+  public create(body) {
+    return this.model.create(body);
+  }
+
+  public deleteById(id) {
+    return this.model.findByIdAndDelete(id);
+  }
+
+  public updateById(id, body) {
+    return this.model.findByIdAndUpdate(id, body);
+  }
+
+  public findOne(query) {
+    return this.model.findOne(query);
+  }
+
+  public findById(id) {
+    return this.model.findById(id);
+  }
+
+  public find(query) {
+    return this.model.find(query);
+  }
+
+  public count(query) {
+    return this.model.countDocuments(query);
+  }
+
+  public async findPage(page = 1, size = 10, query = {}) {
+    const total = await this.count(query);
+    const list = await this.find(query)
+      .skip((+page - 1) * size)
+      .limit(+size);
+
+    return { list, total, page, size };
+  }
+}
