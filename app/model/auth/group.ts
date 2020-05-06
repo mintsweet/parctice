@@ -5,6 +5,7 @@ export interface AuthGroupSchema extends Document {
   name: string;
   remark: string;
   permissions: [string];
+  modifiable: boolean;
 }
 
 export default (app: Application): Model<AuthGroupSchema> => {
@@ -16,6 +17,7 @@ export default (app: Application): Model<AuthGroupSchema> => {
       name: { type: String, required: true, unique: true },
       remark: { type: String, default: '' },
       permissions: { type: Array, default: [] },
+      modifiable: { type: Boolean, default: true },
     },
     { timestamps: true },
   );
