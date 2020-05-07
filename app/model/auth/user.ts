@@ -22,5 +22,5 @@ export default (app: Application): Model<AuthUserSchema> => {
     },
   );
 
-  return mongoose.model('auth_user', AuthUserSchema);
+  return mongoose.model('auth_user', AuthUserSchema, 'auth_user');
 };

@@ -21,5 +21,5 @@ export default (app: Application): Model<UserSchema> => {
     },
   );
 
-  return mongoose.model('user', UserSchema);
+  return mongoose.model('user', UserSchema, 'user');
 };

@@ -22,5 +22,5 @@ export default (app: Application): Model<AuthGroupSchema> => {
     { timestamps: true },
   );
 
-  return mongoose.model('auth_group', AuthGroupSchema);
+  return mongoose.model('auth_group', AuthGroupSchema, 'auth_group');
 };
