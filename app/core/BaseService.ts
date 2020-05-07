@@ -32,6 +32,10 @@ export default class BaseService extends Service {
     return this.model.countDocuments(query);
   }
 
+  public aggregate() {
+    return this.model.aggregate([]);
+  }
+
   public async findPage(page = 1, size = 10, query = {}) {
     const total = await this.count(query);
     const list = await this.find(query)

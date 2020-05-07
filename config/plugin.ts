@@ -6,6 +6,10 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-mongoose',
   },
+  passport: {
+    enable: true,
+    package: 'egg-passport',
+  },
 };
 
 export default plugin;
