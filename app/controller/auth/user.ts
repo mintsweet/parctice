@@ -8,7 +8,9 @@ export default class AuthUserController extends Controller {
 
     const existUser = await this.ctx.service.auth.user.findOne({ username });
 
-    if (existUser) return this.ctx.failure();
+    if (existUser) {
+      return this.ctx.failure({ code: 20006 });
+    }
 
     const { saltPassword } = this.ctx.app.config;
     const result = await this.ctx.service.auth.user.create({
@@ -16,7 +18,7 @@ export default class AuthUserController extends Controller {
       password: md5(`${saltPassword}${password}`),
     });
 
-    return this.ctx.success({ data: result.id });
+    this.ctx.success({ data: result.id });
   }
 
   public async delete() {
@@ -24,7 +26,7 @@ export default class AuthUserController extends Controller {
 
     await this.service.auth.user.deleteById(id);
 
-    return this.ctx.success();
+    this.ctx.success();
   }
 
   public async update() {
@@ -39,7 +41,7 @@ export default class AuthUserController extends Controller {
 
     const result = await this.ctx.service.auth.user.updateById(id, body);
 
-    return this.ctx.success({ data: result?._id });
+    this.ctx.success({ data: result?._id });
   }
 
   public async query() {
@@ -51,6 +53,6 @@ export default class AuthUserController extends Controller {
       condition,
     );
 
-    return this.ctx.success({ data: result });
+    this.ctx.success({ data: result });
   }
 }

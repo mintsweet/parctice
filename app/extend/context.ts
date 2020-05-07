@@ -20,7 +20,7 @@ module.exports = {
     this.status = status;
   },
 
-  failure({ status = 200, code = 20002, data = {} }: Response = {}): void {
+  failure({ status = 200, code = 10000, data = {} }: Response = {}): void {
     this.body = {
       code,
       msg: errorCodeMap[this.lang][code],

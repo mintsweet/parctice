@@ -1,6 +1,5 @@
 import { Controller } from 'egg';
 import * as md5 from 'md5';
-import { UserSchema } from '@/model/user';
 
 export default class UserController extends Controller {
   public async signup() {
@@ -8,12 +7,12 @@ export default class UserController extends Controller {
       body: { username, password },
     } = this.ctx.request;
 
-    const user: UserSchema | null = await this.ctx.service.user.findOne({
+    const user = await this.ctx.service.user.findOne({
       username,
     });
 
     if (user) {
-      return this.ctx.failure({ msg: '当前用户名已注册' });
+      return this.ctx.failure({ code: 30001 });
     }
 
     const { saltPassword } = this.ctx.app.config;
@@ -22,6 +21,6 @@ export default class UserController extends Controller {
       password: md5(`${saltPassword}${password}`),
     });
 
-    return this.ctx.success();
+    this.ctx.success();
   }
 }

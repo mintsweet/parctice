@@ -23,8 +23,6 @@ export default class AuthBasicController extends Controller {
     const { username, password } = this.ctx.request.body;
     const { saltPassword } = this.ctx.app.config;
 
-    console.log(md5(`${saltPassword}${password}`));
-
     const [user] = await this.ctx.service.auth.user
       .aggregate()
       .match({
@@ -49,7 +47,7 @@ export default class AuthBasicController extends Controller {
       });
 
     if (!user) {
-      return this.ctx.failure();
+      return this.ctx.failure({ code: 20001 });
     }
 
     this.ctx.login({
@@ -68,7 +66,7 @@ export default class AuthBasicController extends Controller {
 
   public getInfo() {
     if (!this.ctx.isAuthenticated()) {
-      return this.ctx.failure();
+      return this.ctx.failure({ code: 20002 });
     }
 
     const { username, permissions } = this.ctx.user;
@@ -84,7 +82,7 @@ export default class AuthBasicController extends Controller {
       ),
     );
 
-    return this.ctx.success({
+    this.ctx.success({
       data: {
         username,
         siderbar: filterRBAC(cloneDeep(rbac), flatAuth),

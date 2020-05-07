@@ -7,11 +7,14 @@ export default class AuthGroupController extends Controller {
     const { name } = body;
 
     const existGroup = await this.ctx.service.auth.group.findOne({ name });
-    if (existGroup) return this.ctx.failure();
+
+    if (existGroup) {
+      return this.ctx.failure({ code: 20003 });
+    }
 
     const result = await this.ctx.service.auth.group.create(body);
 
-    return this.ctx.success({ data: result._id });
+    this.ctx.success({ data: result._id });
   }
 
   public async delete() {
@@ -19,18 +22,21 @@ export default class AuthGroupController extends Controller {
 
     const group = await this.ctx.service.auth.group.findById(id);
 
-    if (!group) return this.ctx.failure();
-    if (!group.modifiable) return this.ctx.failure();
+    if (!group.modifiable) {
+      return this.ctx.failure({ code: 20004 });
+    }
 
     const userCount = await this.ctx.service.auth.user.count({
       role: Types.ObjectId(id),
     });
 
-    if (userCount) return this.ctx.failure();
+    if (userCount) {
+      return this.ctx.failure({ code: 20005 });
+    }
 
     await this.ctx.service.auth.group.deleteById(id);
 
-    return this.ctx.success();
+    this.ctx.success();
   }
 
   public async update() {
@@ -39,8 +45,9 @@ export default class AuthGroupController extends Controller {
 
     const group = await this.ctx.service.auth.group.findById(id);
 
-    if (!group) return this.ctx.failure();
-    if (!group.modifiable) return this.ctx.failure();
+    if (!group.modifiable) {
+      return this.ctx.failure({ code: 20004 });
+    }
 
     const result = await this.ctx.service.auth.group.updateById(id, body);
 
@@ -56,6 +63,6 @@ export default class AuthGroupController extends Controller {
       condition,
     );
 
-    return this.ctx.success({ data: result });
+    this.ctx.success({ data: result });
   }
 }
