@@ -7,7 +7,7 @@ const filterRBAC = (data: any, has: any[]) => {
   const result: any = [];
 
   data.forEach((item: any) => {
-    if (has.includes(item.path) && item.menu) {
+    if (has.includes(item.path) && item.name) {
       if (item.routes) {
         item.routes = filterRBAC(item.routes, has);
       }
@@ -43,6 +43,7 @@ export default class AuthBasicController extends Controller {
         permissions: '$group.permissions',
       })
       .project({
+        role: 0,
         group: 0,
       });
 
@@ -66,7 +67,7 @@ export default class AuthBasicController extends Controller {
 
   public getInfo() {
     if (!this.ctx.isAuthenticated()) {
-      return this.ctx.failure({ code: 20002 });
+      return this.ctx.failure({ status: 401, code: 20002 });
     }
 
     const { username, permissions } = this.ctx.user;
@@ -85,7 +86,7 @@ export default class AuthBasicController extends Controller {
     this.ctx.success({
       data: {
         username,
-        siderbar: filterRBAC(cloneDeep(rbac), flatAuth),
+        sidebar: filterRBAC(cloneDeep(rbac), flatAuth),
       },
     });
   }

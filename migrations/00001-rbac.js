@@ -53,7 +53,7 @@ module.exports = {
     await db.collection('auth_user').insertOne({
       username: 'root',
       password: 'e52b9dadafadee9a3b14067253ff7262',
-      role: root.insertedId.toString(),
+      role: root.insertedId,
     });
   },
 
