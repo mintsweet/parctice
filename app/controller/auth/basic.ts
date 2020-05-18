@@ -18,6 +18,19 @@ const filterRBAC = (data: any, has: any[]) => {
   return result;
 };
 
+const getRbacTree = (data: any) => {
+  const result: any = [];
+
+  data.forEach((item: any) => {
+    if (item.routes) {
+      item.routes = getRbacTree(item.routes);
+    }
+    result.push(item);
+  });
+
+  return result;
+};
+
 export default class AuthBasicController extends Controller {
   public async login() {
     const { username, password } = this.ctx.request.body;
@@ -88,6 +101,12 @@ export default class AuthBasicController extends Controller {
         username,
         sidebar: filterRBAC(cloneDeep(rbac), flatAuth),
       },
+    });
+  }
+
+  public getSystemTree() {
+    return this.ctx.success({
+      data: getRbacTree(rbac),
     });
   }
 }
