@@ -47,11 +47,50 @@ export default class AuthUserController extends Controller {
   public async query() {
     const { page, size, ...condition } = this.ctx.query;
 
-    const result = await this.ctx.service.auth.user.findPage(
-      page,
-      size,
-      condition,
-    );
+    const [result] = await this.ctx.service.auth.user
+      .aggregate()
+      .match(condition)
+      .lookup({
+        from: 'auth_group',
+        localField: 'role',
+        foreignField: '_id',
+        as: 'role',
+      })
+      .unwind({
+        path: '$role',
+        preserveNullAndEmptyArrays: true,
+      })
+      .project({
+        username: 1,
+        roleName: '$role.name',
+        roleRemark: '$role.remark',
+        createdAt: 1,
+      })
+      .facet({
+        list: [
+          {
+            $skip: +((page - 1) * size),
+          },
+          {
+            $limit: +size,
+          },
+        ],
+        total: [
+          {
+            $count: 'count',
+          },
+        ],
+      })
+      .project({
+        list: '$list',
+        count: {
+          $arrayElemAt: ['$total', 0],
+        },
+      })
+      .project({
+        list: 1,
+        total: '$count.count',
+      });
 
     this.ctx.success({ data: result });
   }
