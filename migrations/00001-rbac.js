@@ -43,7 +43,10 @@ module.exports = {
     const root = await db.collection('auth_group').insertOne({
       name: 'root',
       remark: '超级管理员',
-      permissions: generateAuth(),
+      permissions: {
+        checked: generateAuth(),
+        halfChecked: [],
+      },
       modifiable: false,
       updatedAt: now,
       createdAt: now,
@@ -52,8 +55,10 @@ module.exports = {
     // 创建初始管理员
     await db.collection('auth_user').insertOne({
       username: 'root',
-      password: 'e52b9dadafadee9a3b14067253ff7262',
       role: root.insertedId,
+      password: 'e52b9dadafadee9a3b14067253ff7262',
+      updatedAt: now,
+      createdAt: now,
     });
   },
 

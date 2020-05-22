@@ -55,20 +55,23 @@ export default class AuthGroupController extends Controller {
   }
 
   public async query() {
-    const { page, size, all, ...condition } = this.ctx.query;
+    const { page, size, all, ...query } = this.ctx.query;
 
     if (all) {
       const result = await this.ctx.service.auth.group
-        .find(condition)
+        .find(query)
         .select('_id name remark');
 
       return this.ctx.success({ data: result });
     }
 
     const result = await this.ctx.service.auth.group.findPage(
-      page,
-      size,
-      condition,
+      {
+        page,
+        size,
+        query,
+      },
+      '-__v',
     );
 
     this.ctx.success({ data: result });

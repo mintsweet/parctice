@@ -16,7 +16,7 @@ export default (app: Application): Model<AuthGroupSchema> => {
     {
       name: { type: String, required: true, unique: true },
       remark: { type: String, default: '' },
-      permissions: { type: Array, default: [] },
+      permissions: { type: Object, default: { checked: [], halfChecked: [] } },
       modifiable: { type: Boolean, default: true },
     },
     { timestamps: true },

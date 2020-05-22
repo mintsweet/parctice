@@ -36,12 +36,17 @@ export default class BaseService extends Service {
     return this.model.aggregate([]);
   }
 
-  public async findPage(page = 1, size = 10, query = {}) {
+  public async findPage(
+    { page = 1, size = 10, query },
+    select?: string | object,
+  ) {
     const total = await this.count(query);
     const list = await this.find(query)
+      .select(select)
+      .sort({ cretaedAt: -1 })
       .skip((+page - 1) * size)
       .limit(+size);
 
-    return { list, total, page, size };
+    return { list, total };
   }
 }

@@ -1,6 +1,6 @@
 import { Controller } from 'egg';
 import * as md5 from 'md5';
-import { cloneDeep, flattenDeep, uniq } from 'lodash';
+import { cloneDeep, flattenDeep, uniq, sortBy } from 'lodash';
 import rbac from '@/rbac';
 
 const filterRBAC = (data: any, has: any[]) => {
@@ -67,7 +67,10 @@ export default class AuthBasicController extends Controller {
     this.ctx.login({
       id: user._id,
       username,
-      permissions: user.permissions,
+      permissions: sortBy([
+        ...user.permissions.checked,
+        ...user.permissions.halfChecked,
+      ]),
     });
 
     this.ctx.success();
