@@ -16,6 +16,10 @@ export default class BaseService extends Service {
     return this.model.findByIdAndUpdate(id, body);
   }
 
+  public updateOne(query, body) {
+    return this.model.updateOne(query, body);
+  }
+
   public findOne(query) {
     return this.model.findOne(query);
   }

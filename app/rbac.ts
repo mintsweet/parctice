@@ -29,4 +29,9 @@ export default [
       },
     ],
   },
+  {
+    name: 'dict',
+    path: '/dict',
+    icon: 'setting',
+  },
 ];
