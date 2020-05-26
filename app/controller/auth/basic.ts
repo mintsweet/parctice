@@ -82,9 +82,7 @@ export default class AuthBasicController extends Controller {
   }
 
   public getInfo() {
-    if (!this.ctx.isAuthenticated()) {
-      return this.ctx.failure({ status: 401, code: 20002 });
-    }
+    this.isLogin();
 
     const { username, permissions } = this.ctx.user;
 
@@ -108,8 +106,46 @@ export default class AuthBasicController extends Controller {
   }
 
   public getSystemTree() {
-    return this.ctx.success({
+    this.isLogin();
+
+    this.ctx.success({
       data: getRbacTree(rbac),
     });
+  }
+
+  public async updateInfo() {
+    this.isLogin();
+
+    const { id } = this.ctx.user;
+
+    await this.ctx.service.auth.user.updateById(id, this.ctx.request.body);
+
+    this.ctx.success();
+  }
+
+  public async updatePassword() {
+    this.isLogin();
+
+    const { id } = this.ctx.user;
+    const { oldPass, newPass } = this.ctx.request.body;
+    const { saltPassword } = this.ctx.app.config;
+
+    const user = await this.ctx.service.auth.user.findById(id);
+
+    if (user.password !== md5(`${saltPassword}${oldPass}`)) {
+      return this.ctx.failure({ code: 20007 });
+    }
+
+    await this.ctx.service.auth.user.updateById(id, {
+      password: md5(`${saltPassword}${newPass}`),
+    });
+
+    this.ctx.success();
+  }
+
+  private isLogin() {
+    if (!this.ctx.isAuthenticated()) {
+      return this.ctx.failure({ status: 401, code: 20002 });
+    }
   }
 }

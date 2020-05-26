@@ -8,4 +8,6 @@ export default (app: Application) => {
   router.post('/auth/logout', controller.auth.basic.logout);
   router.get('/auth/info', controller.auth.basic.getInfo);
   router.get('/auth/system-tree', controller.auth.basic.getSystemTree);
+  router.put('/auth/info', controller.auth.basic.updateInfo);
+  router.put('/auth/password', controller.auth.basic.updatePassword);
 };

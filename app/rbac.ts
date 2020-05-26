@@ -34,4 +34,9 @@ export default [
     path: '/dict',
     icon: 'setting',
   },
+  {
+    name: 'user-info',
+    path: '/user-info',
+    icon: 'user',
+  },
 ];
