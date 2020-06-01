@@ -2,12 +2,16 @@ import { Application } from 'egg';
 
 // 基础权限
 export default (app: Application) => {
-  const { router, controller } = app;
+  const {
+    router,
+    controller,
+    middleware: { auth },
+  } = app;
 
   router.post('/auth/login', controller.auth.basic.login);
-  router.post('/auth/logout', controller.auth.basic.logout);
-  router.get('/auth/info', controller.auth.basic.getInfo);
-  router.get('/auth/system-tree', controller.auth.basic.getSystemTree);
-  router.put('/auth/info', controller.auth.basic.updateInfo);
-  router.put('/auth/password', controller.auth.basic.updatePassword);
+  router.post('/auth/logout', auth(), controller.auth.basic.logout);
+  router.get('/auth/info', auth(), controller.auth.basic.getInfo);
+  router.get('/auth/system-tree', auth(), controller.auth.basic.getSystemTree);
+  router.put('/auth/info', auth(), controller.auth.basic.updateInfo);
+  router.put('/auth/password', auth(), controller.auth.basic.updatePassword);
 };

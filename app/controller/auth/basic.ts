@@ -82,8 +82,6 @@ export default class AuthBasicController extends Controller {
   }
 
   public getInfo() {
-    this.isLogin();
-
     const { username, permissions } = this.ctx.user;
 
     const flatAuth = uniq(
@@ -106,16 +104,12 @@ export default class AuthBasicController extends Controller {
   }
 
   public getSystemTree() {
-    this.isLogin();
-
     this.ctx.success({
       data: getRbacTree(rbac),
     });
   }
 
   public async updateInfo() {
-    this.isLogin();
-
     const { id } = this.ctx.user;
 
     await this.ctx.service.auth.user.updateById(id, this.ctx.request.body);
@@ -124,8 +118,6 @@ export default class AuthBasicController extends Controller {
   }
 
   public async updatePassword() {
-    this.isLogin();
-
     const { id } = this.ctx.user;
     const { oldPass, newPass } = this.ctx.request.body;
     const { saltPassword } = this.ctx.app.config;
@@ -141,11 +133,5 @@ export default class AuthBasicController extends Controller {
     });
 
     this.ctx.success();
-  }
-
-  private isLogin() {
-    if (!this.ctx.isAuthenticated()) {
-      return this.ctx.failure({ status: 401, code: 20002 });
-    }
   }
 }
