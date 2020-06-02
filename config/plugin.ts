@@ -10,6 +10,14 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-passport',
   },
+  redis: {
+    enable: true,
+    package: 'egg-redis',
+  },
+  sessionRedis: {
+    enable: true,
+    package: 'egg-session-redis',
+  },
   auditLog: {
     enable: true,
     package: 'egg-audit-log',

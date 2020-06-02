@@ -20,7 +20,7 @@ export default class DictController extends Controller {
   public async getOne() {
     const { key } = this.ctx.params;
 
-    const { value } = await this.ctx.service.dict.findOne({ key });
+    const { value } = await this.ctx.service.dict.getValue(key);
 
     this.ctx.success({ data: value });
   }

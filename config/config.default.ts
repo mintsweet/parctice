@@ -14,16 +14,18 @@ export default (appInfo: EggAppInfo) => {
 
     auditLog: {
       model: {
-        expansion: {
+        expand: {
           username: String,
           code: Number,
           msg: String,
           data: Object,
         },
-        func: (ctx: Context) => ({
+      },
+      extra: (ctx: Context) => {
+        return {
           ...ctx.body,
-          username: ctx.user?.username || ctx.body?.username,
-        }),
+          username: ctx.user?.username || ctx.request.body.username,
+        };
       },
     },
   } as PowerPartial<EggAppConfig>;

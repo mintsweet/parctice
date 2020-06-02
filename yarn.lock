@@ -353,6 +353,13 @@
   resolved "https://registry.yarnpkg.com/@types/http-assert/-/http-assert-1.5.1.tgz#d775e93630c2469c2f980fc27e3143240335db3b"
   integrity sha512-PGAK759pxyfXE78NbKxyfRcWYA/KwW17X290cNev/qAsn9eQIxkH4shoNBafH37wewhDG/0p1cHPbK6+SzZjWQ==
 
+"@types/ioredis@^4.0.10":
+  version "4.16.3"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.16.3.tgz#385ab1662620e1066334291a02cc70d8756da673"
+  integrity sha512-hE9HUayptwyZRIhRM2FF4vDmond4Yxylpjpri0qBvs7Rw4tFJnM+fdb2PbpU+PKKkPuFBGKnkrGSgwqeUmCJ2Q==
+  dependencies:
+    "@types/node" "*"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0":
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.1.tgz#42995b446db9a48a11a07ec083499a860e9138ff"
@@ -2153,6 +2160,11 @@ cluster-client@^3.0.1:
     tcp-base "^3.1.0"
     utility "^1.15.0"
 
+cluster-key-slot@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/cluster-key-slot/-/cluster-key-slot-1.1.0.tgz#30474b2a981fb12172695833052bc0d01336d10d"
+  integrity sha512-2Nii8p3RwAPiFwsnZvukotvow2rIHM+yQ6ZcBXGHdniadkYGZYiGmkHJIbZPIV9nfv7m/U1IPMVVcAhoWFeklw==
+
 cluster-reload@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/cluster-reload/-/cluster-reload-1.0.2.tgz#346bf5849d18e4590bcc1b30ee470d4cabf15c10"
@@ -2631,7 +2643,7 @@ delegates@^1.0.0:
   resolved "https://registry.yarnpkg.com/delegates/-/delegates-1.0.0.tgz#84c6e159b81904fdca59a0ef44cd870d31250f9a"
   integrity sha1-hMbhWbgZBP3KWaDvRM2HDTElD5o=
 
-denque@^1.4.1:
+denque@^1.1.0, denque@^1.4.1:
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/denque/-/denque-1.4.1.tgz#6744ff7641c148c3f8a69c307e51235c1f4a37cf"
   integrity sha512-OfzPuSZKGcgr96rf1oODnfjqBFmr1DVoc/TrItj3Ohe0Ah1C5WX5Baquw/9U9KovnQ88EqmJbD66rKYUQYN1tQ==
@@ -2767,10 +2779,10 @@ ee-first@1.1.1, ee-first@^1.1.1, ee-first@~1.1.1:
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
   integrity sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0=
 
-egg-audit-log@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/egg-audit-log/-/egg-audit-log-1.1.0.tgz#0f2414bde49b258a93f23862cf065b5aae3c02eb"
-  integrity sha512-oRXyfmTqN/3RvqdMxEgG0t8CgvD2mNVKfgsprLMm/jGw7mt2/ZrAXrj7xA9X0zELcSzzWX1nZ2QFWYfoIOLQkg==
+egg-audit-log@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/egg-audit-log/-/egg-audit-log-1.1.1.tgz#cfce02c6ae5198c2b78be380b0a35168cde1d1a5"
+  integrity sha512-fTgaa5Mi0mLkplGLM6yDdrww0IoXGyiqC7ChOji9yXCraAUr0nD4QjBwchN7R8XlkOmV1URxU5X6DowjTPexGw==
   dependencies:
     mongoose "^5.7.7"
 
@@ -2989,6 +3001,15 @@ egg-path-matching@^1.0.0, egg-path-matching@^1.0.1:
   dependencies:
     path-to-regexp "^1.7.0"
 
+egg-redis@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/egg-redis/-/egg-redis-2.4.0.tgz#9773adfce34b8eb902610eda7525ccfefd87a735"
+  integrity sha512-c8NBivXMfHhxBh2hdAFlYP5R1790SF+E9dMCEN54Qbgu3QsMKoGH3Db5dN2cZ6SpBD0XED/Evlcl0LXqNecToA==
+  dependencies:
+    "@types/ioredis" "^4.0.10"
+    await-first "^1.0.0"
+    ioredis "^4.9.0"
+
 egg-schedule@^3.6.0:
   version "3.6.4"
   resolved "https://registry.yarnpkg.com/egg-schedule/-/egg-schedule-3.6.4.tgz#0a92ec7baec7daafe5191e8ae0e312857fb26009"
@@ -3037,6 +3058,11 @@ egg-security@^2.4.3:
     statuses "^1.5.0"
     type-is "^1.6.15"
     xss "^1.0.3"
+
+egg-session-redis@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/egg-session-redis/-/egg-session-redis-2.1.0.tgz#b58aca762961a9c86ee7b76ebbb4b6749927cdfe"
+  integrity sha512-PZP+KNd9jwAAqrnvOQVuhzS4vDTqB3frAGEXKnBE167UOzOlY92CJ4ycVQR0tCJimD9so2CyWnRGSs6Szh0uiQ==
 
 egg-session@^3.1.0:
   version "3.1.0"
@@ -4528,6 +4554,21 @@ invert-kv@^2.0.0:
   resolved "https://registry.yarnpkg.com/invert-kv/-/invert-kv-2.0.0.tgz#7393f5afa59ec9ff5f67a27620d11c226e3eec02"
   integrity sha512-wPVv/y/QQ/Uiirj/vh3oP+1Ww+AWehmi1g5fFWGPF6IpCBCDVrhgHRMvrLfdYcwDh3QJbGXDW4JAuzxElLSqKA==
 
+ioredis@^4.9.0:
+  version "4.17.3"
+  resolved "https://registry.yarnpkg.com/ioredis/-/ioredis-4.17.3.tgz#9938c60e4ca685f75326337177bdc2e73ae9c9dc"
+  integrity sha512-iRvq4BOYzNFkDnSyhx7cmJNOi1x/HWYe+A4VXHBu4qpwJaGT1Mp+D2bVGJntH9K/Z/GeOM/Nprb8gB3bmitz1Q==
+  dependencies:
+    cluster-key-slot "^1.1.0"
+    debug "^4.1.1"
+    denque "^1.1.0"
+    lodash.defaults "^4.2.0"
+    lodash.flatten "^4.4.0"
+    redis-commands "1.5.0"
+    redis-errors "^1.2.0"
+    redis-parser "^3.0.0"
+    standard-as-callback "^2.0.1"
+
 ip@1.1.5, ip@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/ip/-/ip-1.1.5.tgz#bdded70114290828c0a039e72ef25f5aaec4354a"
@@ -5291,6 +5332,16 @@ locate-path@^5.0.0:
   integrity sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
   dependencies:
     p-locate "^4.1.0"
+
+lodash.defaults@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/lodash.defaults/-/lodash.defaults-4.2.0.tgz#d09178716ffea4dde9e5fb7b37f6f0802274580c"
+  integrity sha1-0JF4cW/+pN3p5ft7N/bwgCJ0WAw=
+
+lodash.flatten@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/lodash.flatten/-/lodash.flatten-4.4.0.tgz#f31c22225a9632d2bbf8e4addbef240aa765a61f"
+  integrity sha1-8xwiIlqWMtK7+OSt2+8kCqdlph8=
 
 lodash.flattendeep@^4.4.0:
   version "4.4.0"
@@ -6806,6 +6857,23 @@ ready-callback@^2.1.0:
     once "^1.4.0"
     uuid "^3.0.1"
 
+redis-commands@1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/redis-commands/-/redis-commands-1.5.0.tgz#80d2e20698fe688f227127ff9e5164a7dd17e785"
+  integrity sha512-6KxamqpZ468MeQC3bkWmCB1fp56XL64D4Kf0zJSwDZbVLLm7KFkoIcHrgRvQ+sk8dnhySs7+yBg94yIkAK7aJg==
+
+redis-errors@^1.0.0, redis-errors@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/redis-errors/-/redis-errors-1.2.0.tgz#eb62d2adb15e4eaf4610c04afe1529384250abad"
+  integrity sha1-62LSrbFeTq9GEMBK/hUpOEJQq60=
+
+redis-parser@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-3.0.0.tgz#b66d828cdcafe6b4b8a428a7def4c6bcac31c8b4"
+  integrity sha1-tm2CjNyv5rS4pCin3vTGvKwxyLQ=
+  dependencies:
+    redis-errors "^1.0.0"
+
 regenerate@^1.2.1:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/regenerate/-/regenerate-1.4.0.tgz#4a856ec4b56e4077c557589cae85e7a4c8869a11"
@@ -7406,6 +7474,11 @@ stack-trace@^0.0.10:
   version "0.0.10"
   resolved "https://registry.yarnpkg.com/stack-trace/-/stack-trace-0.0.10.tgz#547c70b347e8d32b4e108ea1a2a159e5fdde19c0"
   integrity sha1-VHxws0fo0ytOEI6hoqFZ5f3eGcA=
+
+standard-as-callback@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/standard-as-callback/-/standard-as-callback-2.0.1.tgz#ed8bb25648e15831759b6023bdb87e6b60b38126"
+  integrity sha512-NQOxSeB8gOI5WjSaxjBgog2QFw55FV8TkS6Y07BiB3VJ8xNTvUYm0wl0s8ObgQ5NhdpnNfigMIKjgPESzgr4tg==
 
 static-extend@^0.1.1:
   version "0.1.2"
