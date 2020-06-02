@@ -8,6 +8,8 @@ import AuthUserRouter from '@/router/auth/user';
 
 import Dict from '@/router/dict';
 
+import AuditLog from '@/router/audit-log';
+
 export default (app: Application) => {
   CommonRouter(app);
   UserRouter(app);
@@ -17,4 +19,6 @@ export default (app: Application) => {
   AuthUserRouter(app);
 
   Dict(app);
+
+  AuditLog(app);
 };

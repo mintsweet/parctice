@@ -39,4 +39,9 @@ export default [
     path: '/user-info',
     icon: 'user',
   },
+  {
+    name: 'audit-log',
+    path: '/audit-log',
+    icon: 'tag',
+  },
 ];

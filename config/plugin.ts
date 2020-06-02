@@ -10,6 +10,10 @@ const plugin: EggPlugin = {
     enable: true,
     package: 'egg-passport',
   },
+  auditLog: {
+    enable: true,
+    package: 'egg-audit-log',
+  },
 };
 
 export default plugin;

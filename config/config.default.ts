@@ -1,4 +1,4 @@
-import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import { EggAppConfig, EggAppInfo, PowerPartial, Context } from 'egg';
 
 export default (appInfo: EggAppInfo) => {
   const config = {
@@ -9,6 +9,21 @@ export default (appInfo: EggAppInfo) => {
     security: {
       csrf: {
         enable: false,
+      },
+    },
+
+    auditLog: {
+      model: {
+        expansion: {
+          username: String,
+          code: Number,
+          msg: String,
+          data: Object,
+        },
+        func: (ctx: Context) => ({
+          ...ctx.body,
+          username: ctx.user?.username || ctx.body?.username,
+        }),
       },
     },
   } as PowerPartial<EggAppConfig>;
