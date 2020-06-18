@@ -4,7 +4,6 @@ export default (appInfo: EggAppInfo) => {
   const config = {
     keys: appInfo.name + '_1587610971751_279',
     skipAuthentication: false,
-    middleware: ['language'],
     saltPassword: 'hawthorn',
     security: {
       csrf: {
