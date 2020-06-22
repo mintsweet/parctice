@@ -11,6 +11,7 @@ import Dict from '@/router/dict';
 import AuditLog from '@/router/audit-log';
 
 import User from '@/router/user';
+import Topic from '@/router/topic';
 
 export default (app: Application) => {
   CommonRouter(app);
@@ -25,4 +26,5 @@ export default (app: Application) => {
   AuditLog(app);
 
   User(app);
+  Topic(app);
 };
