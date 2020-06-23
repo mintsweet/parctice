@@ -71,4 +71,66 @@ export default class UserController extends Controller {
       this.ctx.failure({ code: err });
     }
   }
+
+  public async createTopic() {
+    const { id } = this.ctx.user;
+    const { body } = this.ctx.request;
+    const { title, content, tab_id } = body;
+
+    if (!title) {
+      return this.ctx.failure({ code: 20014 });
+    }
+
+    if (!content) {
+      return this.ctx.failure({ code: 20015 });
+    }
+
+    if (!tab_id) {
+      return this.ctx.failure({ code: 20016 });
+    }
+
+    await this.ctx.service.topic.createTopic(title, content, tab_id, id);
+    this.ctx.success();
+  }
+
+  public async deleteTopic() {
+    const { id: author_id } = this.ctx.user;
+    const { id } = this.ctx.params;
+
+    try {
+      await this.ctx.service.topic.deleteTopic(id, author_id);
+      this.ctx.success();
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
+  }
+
+  public async updateTopic() {
+    const { id: author_id } = this.ctx.user;
+    const { id } = this.ctx.params;
+    const { body } = this.ctx.request;
+
+    try {
+      await this.ctx.service.topic.updateTopic(id, body, author_id);
+      this.ctx.success();
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
+  }
+
+  public async getTopicDetail() {
+    const { id } = this.ctx.params;
+    try {
+      const data = await this.ctx.service.topic.getTopicDetail(id);
+      this.ctx.success({ data });
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
+  }
+
+  public async queryTopic() {
+    const { page = 1, size = 10, ...condition } = this.ctx.query;
+    const data = await this.ctx.service.topic.queryTopic(page, size, condition);
+    this.ctx.success({ data });
+  }
 }
