@@ -3,17 +3,20 @@ import { Model, Types } from 'mongoose';
 import { TopicTabModel } from '@/model/topic/tab';
 import { TopicModel } from '@/model/topic';
 import { UserModel } from '@/model/user';
+import { ActivityModel } from '@/model/user/activity';
 
 export default class TopicService extends Service {
   private tab: Model<TopicTabModel>;
   private topic: Model<TopicModel>;
   private user: Model<UserModel>;
+  private activity: Model<ActivityModel>;
 
   constructor(ctx) {
     super(ctx);
     this.tab = ctx.model.Topic.Tab;
     this.topic = ctx.model.Topic.Index;
     this.user = ctx.model.User.Index;
+    this.activity = ctx.model.User.Activity;
   }
 
   /**
@@ -128,6 +131,10 @@ export default class TopicService extends Service {
     await this.topic.findByIdAndUpdate(id, updated);
   }
 
+  /**
+   * 获取话题详情
+   * @param id 话题ID
+   */
   public async getTopicDetail(id) {
     const [result] = await this.topic
       .aggregate([])
@@ -229,5 +236,135 @@ export default class TopicService extends Service {
       });
 
     return { list: result.list, total: result.total[0]?.count || 0 };
+  }
+
+  /**
+   * 喜欢或者取消喜欢话题
+   * @param tid 话题ID
+   * @param aid 登录用户ID
+   */
+  public async likeOrCancel(tid, aid) {
+    const topic = await this.topic.findById(tid);
+
+    if (!topic) {
+      throw 20017;
+    }
+
+    if (topic.author_id === aid) {
+      throw 20020;
+    }
+
+    const activity = await this.activity.findOneAndUpdate(
+      {
+        type: 'liked',
+        author_id: aid,
+        target_id: tid,
+      },
+      {},
+      { new: true, upsert: true },
+    );
+
+    if (activity?.is_cancel) {
+      await Promise.all([
+        this.topic.findByIdAndUpdate(tid, {
+          $inc: { like_count: 1 },
+        }),
+        this.user.findByIdAndUpdate(aid, {
+          $inc: { score: 10 },
+        }),
+        this.activity.findOneAndUpdate(
+          {
+            type: 'liked',
+            author_id: aid,
+            target_id: tid,
+          },
+          { is_cancel: false },
+        ),
+      ]);
+    } else {
+      await Promise.all([
+        this.topic.findByIdAndUpdate(tid, {
+          $inc: { like_count: -1 },
+        }),
+        this.user.findByIdAndUpdate(aid, {
+          $inc: { score: -10 },
+        }),
+        this.activity.findOneAndUpdate(
+          {
+            type: 'liked',
+            author_id: aid,
+            target_id: tid,
+          },
+          { is_cancel: true },
+        ),
+      ]);
+    }
+
+    return activity?.is_cancel ? 'like' : 'like_cancel';
+  }
+
+  /**
+   * 收藏或者取消收藏话题
+   * @param tid 话题ID
+   * @param aid 登录用户ID
+   */
+  public async collectOrCancel(tid, aid) {
+    const topic = await this.topic.findById(tid);
+
+    if (!topic) {
+      throw 20017;
+    }
+
+    if (topic.author_id === aid) {
+      throw 20021;
+    }
+
+    const activity = await this.activity.findOneAndUpdate(
+      {
+        type: 'collected',
+        author_id: aid,
+        target_id: tid,
+      },
+      {},
+      { new: true, upsert: true },
+    );
+
+    if (activity?.is_cancel) {
+      await Promise.all([
+        this.topic.findByIdAndUpdate(tid, {
+          $inc: { collect_count: 1 },
+        }),
+        this.user.findByIdAndUpdate(aid, {
+          $inc: { score: 3 },
+        }),
+        this.activity.findOneAndUpdate(
+          {
+            type: 'collected',
+            author_id: aid,
+            target_id: tid,
+          },
+          { is_cancel: false },
+        ),
+      ]);
+    } else {
+      await Promise.all([
+        this.topic.findByIdAndUpdate(tid, {
+          $inc: { collect_count: -1 },
+        }),
+        this.user.findByIdAndUpdate(aid, {
+          $inc: { score: -3 },
+        }),
+        this.activity.findOneAndUpdate(
+          {
+            type: 'collected',
+            author_id: aid,
+            target_id: tid,
+          },
+          { is_cancel: true },
+        ),
+      ]);
+    }
+
+    return activity?.is_cancel ? 'collect' : 'collect_cancel';
   }
 }

@@ -130,7 +130,44 @@ export default class UserController extends Controller {
 
   public async queryTopic() {
     const { page = 1, size = 10, ...condition } = this.ctx.query;
-    const data = await this.ctx.service.topic.queryTopic(page, size, condition);
+    const query = condition;
+
+    if (condition.tab) {
+      if (condition.tab === 'all') {
+        delete query.tab;
+      }
+
+      if (condition.tab === 'good') {
+        delete query.tab;
+        query.good = true;
+      }
+    }
+
+    const data = await this.ctx.service.topic.queryTopic(page, size, query);
     this.ctx.success({ data });
+  }
+
+  public async likeOrCancel() {
+    const { id } = this.ctx.params;
+    const { id: author_id } = this.ctx.user;
+
+    try {
+      const data = await this.ctx.service.topic.likeOrCancel(id, author_id);
+      this.ctx.success({ data });
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
+  }
+
+  public async collectOrCancel() {
+    const { id } = this.ctx.params;
+    const { id: author_id } = this.ctx.user;
+
+    try {
+      const data = await this.ctx.service.topic.collectOrCancel(id, author_id);
+      this.ctx.success({ data });
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
   }
 }

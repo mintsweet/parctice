@@ -26,6 +26,8 @@ export default (app: Application): Model<TopicModel> => {
       status: { type: String, default: 'normal' },
 
       visit_count: { type: Number, default: 0 },
+      like_count: { type: Number, default: 0 },
+      collect_count: { type: Number, default: 0 },
     },
     {
       usePushEach: true,
