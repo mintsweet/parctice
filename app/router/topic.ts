@@ -14,4 +14,7 @@ export default (app: Application) => {
   router.get('/topics', controller.topic.queryTopic);
   router.put('/topic/:id/like_or_cancel', controller.topic.likeOrCancel);
   router.put('/topic/:id/collect_or_cancel', controller.topic.collectOrCancel);
+  router.post('/topic/:id/reply', controller.topic.createReply);
+  router.delete('/reply/:id', controller.topic.deleteReply);
+  router.put('/reply/:id', controller.topic.updateReply);
 };

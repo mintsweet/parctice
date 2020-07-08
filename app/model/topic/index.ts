@@ -2,6 +2,7 @@ import { Application } from 'egg';
 import { Model, Document, Types } from 'mongoose';
 import { UserModel } from '@/model/user';
 import { TopicTabModel } from './tab';
+import { TopicReplyModel } from './reply';
 
 export interface TopicModel extends Document {
   title: string;
@@ -10,6 +11,9 @@ export interface TopicModel extends Document {
   tab_id: TopicTabModel['_id'];
   status: 'normal' | 'delete';
   visit_count: number;
+  like_count: number;
+  collect_count: number;
+  last_reply_id: TopicReplyModel['_id'];
 }
 
 export default (app: Application): Model<TopicModel> => {
@@ -28,6 +32,8 @@ export default (app: Application): Model<TopicModel> => {
       visit_count: { type: Number, default: 0 },
       like_count: { type: Number, default: 0 },
       collect_count: { type: Number, default: 0 },
+
+      last_reply_id: { type: Types.ObjectId },
     },
     {
       usePushEach: true,

@@ -2,12 +2,14 @@ import { Service } from 'egg';
 import { Model, Types } from 'mongoose';
 import { TopicTabModel } from '@/model/topic/tab';
 import { TopicModel } from '@/model/topic';
+import { TopicReplyModel } from '@/model/topic/reply';
 import { UserModel } from '@/model/user';
 import { ActivityModel } from '@/model/user/activity';
 
 export default class TopicService extends Service {
   private tab: Model<TopicTabModel>;
   private topic: Model<TopicModel>;
+  private reply: Model<TopicReplyModel>;
   private user: Model<UserModel>;
   private activity: Model<ActivityModel>;
 
@@ -15,6 +17,7 @@ export default class TopicService extends Service {
     super(ctx);
     this.tab = ctx.model.Topic.Tab;
     this.topic = ctx.model.Topic.Index;
+    this.reply = ctx.model.Topic.Reply;
     this.user = ctx.model.User.Index;
     this.activity = ctx.model.User.Activity;
   }
@@ -366,5 +369,58 @@ export default class TopicService extends Service {
     }
 
     return activity?.is_cancel ? 'collect' : 'collect_cancel';
+  }
+
+  /**
+   * 创建回复
+   * @param content 回复内容
+   * @param tid 回复话题ID
+   * @param aid 回复人ID
+   */
+  public async createReply(content, tid, aid) {
+    const topic = await this.topic.findById(tid);
+
+    if (!topic) throw 20017;
+
+    const reply = await this.reply.create({
+      content,
+      topic_id: tid,
+      author_id: aid,
+    });
+
+    await this.topic.findByIdAndUpdate(tid, {
+      last_reply_id: reply._id,
+    });
+  }
+
+  /**
+   * 删除回复
+   * @param id 回复ID
+   * @param aid 登录用户ID
+   */
+  public async deleteReply(id, aid) {
+    const reply = await this.reply.findById(id);
+
+    if (!reply) throw 20022;
+    if (!reply.author_id.equals(aid)) throw 20023;
+
+    await this.reply.findByIdAndDelete(id);
+  }
+
+  /**
+   * 修改回复
+   * @param id 回复ID
+   * @param aid 登录用户ID
+   * @param content 回复内容
+   */
+  public async updateReply(id, aid, content) {
+    const reply = await this.reply.findById(id);
+
+    if (!reply) throw 20022;
+    if (!reply.author_id.equals(aid)) throw 20023;
+
+    await this.reply.findByIdAndUpdate(id, {
+      content,
+    });
   }
 }

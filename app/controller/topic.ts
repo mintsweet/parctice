@@ -170,4 +170,50 @@ export default class UserController extends Controller {
       this.ctx.failure({ code: err });
     }
   }
+
+  public async createReply() {
+    const { id } = this.ctx.params;
+    const { id: author_id } = this.ctx.user;
+    const { content } = this.ctx.request.body;
+
+    if (!content) {
+      return this.ctx.failure({ code: 20024 });
+    }
+
+    try {
+      await this.ctx.service.topic.createReply(content, id, author_id);
+      this.ctx.success();
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
+  }
+
+  public async deleteReply() {
+    const { id } = this.ctx.params;
+    const { id: author_id } = this.ctx.user;
+
+    try {
+      await this.ctx.service.topic.deleteReply(id, author_id);
+      this.ctx.success();
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
+  }
+
+  public async updateReply() {
+    const { id } = this.ctx.params;
+    const { id: author_id } = this.ctx.user;
+    const { content } = this.ctx.request.body;
+
+    if (!content) {
+      return this.ctx.failure({ code: 20024 });
+    }
+
+    try {
+      await this.ctx.service.topic.updateReply(id, author_id, content);
+      this.ctx.success();
+    } catch (err) {
+      this.ctx.failure({ code: err });
+    }
+  }
 }
